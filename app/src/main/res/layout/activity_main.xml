@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="mainActivity"
+            type="com.berkedursunoglu.a.main.MainActivity" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.MainActivity"
+    android:background="@color/primaryLightColor">
+
+    <androidx.appcompat.widget.Toolbar
+        app:title="TODO"
+        app:titleTextColor="@color/primaryTextColor"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/shopping_button"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:icon="@drawable/basket"
+                android:layout_gravity="center"
+                android:onClick="@{()-> mainActivity.shoopingActivity()}"
+                android:text="@string/al_veri_listesi"
+                android:textColor="@color/primaryTextColor"
+                app:iconTint="#FFFFFF">
+
+            </Button>
+
+            <Button
+                android:id="@+id/meeting_button"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:icon="@drawable/conversation"
+                android:layout_gravity="center"
+                android:text="@string/toplant"
+                android:textColor="@color/primaryTextColor"
+                android:onClick="@{()-> mainActivity.meetingActivity()}"
+                app:iconTint="#FFFFFF">
+            </Button>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/note_button"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:icon="@drawable/notes"
+                android:onClick="@{()-> mainActivity.noteActivity()}"
+                android:textColor="@color/primaryTextColor"
+                android:layout_gravity="center"
+                android:text="@string/not"
+                app:iconTint="#FFFFFF">
+
+            </Button>
+
+            <Button
+                android:id="@+id/reminder_button"
+                android:layout_width="0dp"
+                android:onClick="@{()-> mainActivity.reminderActivity()}"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:icon="@drawable/reminder"
+                android:layout_gravity="center"
+                android:text="@string/hat_rlat"
+                android:textColor="@color/primaryTextColor"
+                app:iconTint="#FFFFFF">
+            </Button>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/calender_button"
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:icon="@drawable/calendar"
+                android:layout_gravity="center"
+                android:text="@string/takvim"
+                android:textColor="@color/primaryTextColor"
+                app:iconTint="#FFFFFF">
+
+            </Button>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="160dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                app:icon="@drawable/conversation"
+                android:layout_gravity="center"
+                android:textColor="@color/primaryTextColor"
+                android:text=""
+                app:iconTint="#FFFFFF"
+                style="?android:attr/buttonBarButtonStyle">
+            </Button>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

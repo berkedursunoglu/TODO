@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">A</string>
+    <string name="toplant">Toplantı</string>
+    <string name="not">Not</string>
+    <string name="hat_rlat_c">Hatırlatıcı</string>
+    <string name="takvim">Takvim</string>
+    <string name="hat_rlat">Hatırlat</string>
+    <string name="al_veri_listesi">Alışveriş Listesi</string>
+    <string name="rn_2_ekmek">Örn. 2 Ekmek</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

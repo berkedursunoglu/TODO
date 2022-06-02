@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/primaryLightColor"
+    android:outlineAmbientShadowColor="@color/primaryLightColor"
+    android:outlineSpotShadowColor="@color/primaryLightColor"
+    app:cardCornerRadius="50dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/primaryColor"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/reminder_decs_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Günlük toplantı"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="25dp"/>
+
+        <TextView
+            android:id="@+id/date_desc_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20/07/2023"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/time_decs_textview"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/primaryTextColor"
+            android:layout_marginEnd="15dp"/>
+
+        <TextView
+            android:id="@+id/time_decs_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:text="12.00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/primaryTextColor"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
