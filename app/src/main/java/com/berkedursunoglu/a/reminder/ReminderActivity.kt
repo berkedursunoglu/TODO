@@ -1,48 +1,57 @@
 package com.berkedursunoglu.a.reminder
 
 import android.app.*
-import android.app.PendingIntent.*
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.berkedursunoglu.a.R
 import com.berkedursunoglu.a.databinding.ActivityReminderBinding
 import com.berkedursunoglu.a.databinding.ReminderAlertdialogBinding
+import com.berkedursunoglu.a.model.ReminderModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
 class ReminderActivity : AppCompatActivity() {
 
-    private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
-    private lateinit var dataBinding: ActivityReminderBinding
-    private lateinit var rv: ReminderRecyclerView
-    private lateinit var viewModel: ReminderViewModel
     private lateinit var dataBindingReminder: ReminderAlertdialogBinding
+    private lateinit var dataBinding: ActivityReminderBinding
+    private lateinit var viewModel: ReminderViewModel
+    private lateinit var rv: ReminderRecyclerView
     private val cal = Calendar.getInstance()
-    var setLongClock:Long  = 0
+    private lateinit var alarmManager: AlarmManager
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_reminder)
         dataBindingReminder = DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
+        dataBinding.reminderRecyclerview.layoutManager = LinearLayoutManager(this.applicationContext)
         viewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
-
+        recyclerView()
         dataBinding.addReminder.setOnClickListener {
             alertDialog()
-            unsetAlarm()
 
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun alertDialog() {
         dataBindingReminder = DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
         alertDialogsetTime()
@@ -52,12 +61,11 @@ class ReminderActivity : AppCompatActivity() {
         alertDialog.setMessage("Gerekli bilgileri doldurunuz")
         alertDialog.setPositiveButton("Tamam") { _, _ ->
             if (checkTime(cal.timeInMillis)){
-                setAlarm()
+                alarmManager()
                 Toast.makeText(this.applicationContext,"Hatırlatma Kuruldu",Toast.LENGTH_LONG).show()
             }
         }
         alertDialog.setNegativeButton("İptal") { _, _ ->
-            unsetAlarm()
         }
 
         dataBindingReminder.calenderButton.setOnClickListener {
@@ -82,24 +90,6 @@ class ReminderActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setAlarm() {
-        alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        //var intrequest = sharedInteger()
-
-        alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
-            intent.putExtra("key","start")
-            val flags = FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
-            PendingIntent.getBroadcast(this, 1, intent, flags)
-        }
-
-        //createNotificationChannel()
-
-        var setAlarmMillis = cal.timeInMillis
-
-
-        alarmMgr?.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,setAlarmMillis,alarmIntent)
-
-    }
 
     private fun datePicker(context: Context) {
         val datePicker = DatePickerDialog.OnDateSetListener { _, i, i2, i3 ->
@@ -146,25 +136,60 @@ class ReminderActivity : AppCompatActivity() {
         return intplus
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "remindernotification"
-            val descriptionText = "alarmnotification"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("1", name, importance).apply {
-                description = descriptionText
-            }
-            }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun alarmManager(){
+        alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.canScheduleExactAlarms()
+        var requestCode = sharedInteger()
+        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
+            val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,flag)
         }
 
-    private fun unsetAlarm(){
-        alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val myIntent = Intent(this, AlarmReceiver::class.java).let {
-            it.putExtra("key","stop")
-            val flags = FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
-            PendingIntent.getBroadcast(this, 1, it, flags)
+        val timeMillis = cal.timeInMillis
+
+        val receiver = ComponentName(this.applicationContext, AlarmReceiver::class.java)
+
+        this.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
+        val datetext = dataBindingReminder.reminderDatetextview.text.toString()
+        val clocktext = dataBindingReminder.reminderTimetextview.text.toString()
+        var desc = dataBindingReminder.reminderEdittext.text.toString()
+        if(desc == ""){
+            desc = "Hatırlatma"
         }
-        alarmMgr?.cancel(myIntent)
+        viewModel.insertDatabase(this.applicationContext,desc,clocktext,datetext,timeMillis,requestCode)
+        recyclerView()
+
     }
 
+    private fun recyclerView(){
+        viewModel.getAllDatabase(this.applicationContext)
+        viewModel.reminderArray.observe(this){
+            rv = ReminderRecyclerView(it)
+
+            dataBinding.reminderRecyclerview.adapter = rv
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun cancelAlarm(){
+        viewModel.deleteDatabase(this.applicationContext,1)
+        alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.canScheduleExactAlarms()
+        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
+            val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.getBroadcast(this.applicationContext,0,it,flag)
+        }
+
+        val timeMillis = cal.timeInMillis
+
+        val receiver = ComponentName(this.applicationContext, AlarmReceiver::class.java)
+
+        this.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
+    }
 }

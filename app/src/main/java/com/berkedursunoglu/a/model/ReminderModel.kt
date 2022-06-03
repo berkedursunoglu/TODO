@@ -1,4 +1,23 @@
 package com.berkedursunoglu.a.model
 
-data class ReminderModel(val descReminder:String,val dateReminder:String,val clockReminder:String) {
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "reminder")
+data class ReminderModel(
+    @ColumnInfo(name = "descReminder")
+    val descReminder:String,
+    @ColumnInfo(name = "dateReminder")
+    val dateReminder:String,
+    @ColumnInfo(name = "clockReminder")
+    val clockReminder:String,
+    @ColumnInfo(name = "clockTimeMillis")
+    val clockTimeMillis:Long,
+    @ColumnInfo(name = "requestCode")
+    val requestCode:Int
+    ) {
+
+    @PrimaryKey(autoGenerate = true)
+     var uuid = 0
 }

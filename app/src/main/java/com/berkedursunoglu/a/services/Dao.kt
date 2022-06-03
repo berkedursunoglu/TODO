@@ -20,4 +20,6 @@ interface Dao {
     suspend fun getAllShooping(): List<ShoopingModel>
 
 
+
+
 }
