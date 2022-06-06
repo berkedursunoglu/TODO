@@ -142,54 +142,49 @@ class ReminderActivity : AppCompatActivity() {
         alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.canScheduleExactAlarms()
         var requestCode = sharedInteger()
-        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
-            val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,flag)
-        }
-
-        val timeMillis = cal.timeInMillis
-
-        val receiver = ComponentName(this.applicationContext, AlarmReceiver::class.java)
-
-        this.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
         val datetext = dataBindingReminder.reminderDatetextview.text.toString()
         val clocktext = dataBindingReminder.reminderTimetextview.text.toString()
         var desc = dataBindingReminder.reminderEdittext.text.toString()
         if(desc == ""){
             desc = "Hatırlatma"
         }
+        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
+            it.putExtra("desc",desc)
+            var flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,flag)
+        }
+
+        val timeMillis = cal.timeInMillis
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
+
         viewModel.insertDatabase(this.applicationContext,desc,clocktext,datetext,timeMillis,requestCode)
         recyclerView()
-
+        createNotificationChannel()
     }
 
     private fun recyclerView(){
         viewModel.getAllDatabase(this.applicationContext)
         viewModel.reminderArray.observe(this){
             rv = ReminderRecyclerView(it)
-
             dataBinding.reminderRecyclerview.adapter = rv
+            rv.notifyDataSetChanged()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun cancelAlarm(){
-        viewModel.deleteDatabase(this.applicationContext,1)
-        alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.canScheduleExactAlarms()
-        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
-            val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-            PendingIntent.getBroadcast(this.applicationContext,0,it,flag)
+
+
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notification"
+            val descriptionText = "Reminder Notification"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("reminderChannel", name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
-
-        val timeMillis = cal.timeInMillis
-
-        val receiver = ComponentName(this.applicationContext, AlarmReceiver::class.java)
-
-        this.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
     }
 }

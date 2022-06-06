@@ -1,14 +1,25 @@
 package com.berkedursunoglu.a.reminder
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.berkedursunoglu.a.R
 import com.berkedursunoglu.a.model.ReminderModel
+import com.berkedursunoglu.a.services.ReminderDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ReminderRecyclerView(val arrayListReminder:List<ReminderModel>):RecyclerView.Adapter<RecyclerViewReminderViewHolder>() {
+class ReminderRecyclerView(var arrayListReminder:ArrayList<ReminderModel>):RecyclerView.Adapter<RecyclerViewReminderViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,11 +32,44 @@ class ReminderRecyclerView(val arrayListReminder:List<ReminderModel>):RecyclerVi
         holder.itemDesc.text = arrayListReminder[position].descReminder
         holder.itemDate.text = arrayListReminder[position].dateReminder
         holder.itemTime.text = arrayListReminder[position].clockReminder
+        holder.itemView.setOnClickListener {
+            var requestCode = arrayListReminder[position].requestCode
+            var position = position
+            alertDiaglog(holder.itemView.context,requestCode,position)
+        }
     }
 
     override fun getItemCount(): Int {
         return arrayListReminder.size
     }
+
+    private fun alertDiaglog(context: Context,requestCode:Int,position: Int){
+        val alert = AlertDialog.Builder(context)
+        alert.setTitle("Hatırlatıcı")
+        alert.setMessage("Hatırlatıcı iptal edilsin mi?")
+        alert.setPositiveButton("Evet"){ diaglog,which ->
+
+            var alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context.applicationContext,AlarmReceiver::class.java).let {
+                val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+                PendingIntent.getBroadcast(context.applicationContext,requestCode,it,flag)
+            }
+            alarmManager.cancel(intent)
+            GlobalScope.launch(Dispatchers.IO) {
+                ReminderDatabase.invoke(context).reminderDao().deleteReminder(arrayListReminder[position].uuid)
+            }
+
+            notifyItemRemoved(position)
+            arrayListReminder.removeAt(position)
+
+
+        }
+        alert.setNegativeButton("Hayır"){diaglog,which ->
+
+        }
+        alert.show()
+    }
+
 }
 
 class RecyclerViewReminderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

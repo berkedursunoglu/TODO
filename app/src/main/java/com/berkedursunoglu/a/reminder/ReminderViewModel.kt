@@ -16,11 +16,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ReminderViewModel : ViewModel() {
 
-    val reminderArray = MutableLiveData<List<ReminderModel>>()
+    val reminderArray = MutableLiveData<ArrayList<ReminderModel>>()
 
 
     fun insertDatabase(context: Context,desc:String,clock:String,date:String,timeMillis:Long,request:Int){
@@ -34,7 +35,7 @@ class ReminderViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val arrayList = ReminderDatabase.invoke(context).reminderDao().getAllReminder()
             withContext(Dispatchers.Main){
-                reminderArray.value = arrayList
+                reminderArray.value = arrayList as ArrayList<ReminderModel>
             }
         }
     }
@@ -44,6 +45,8 @@ class ReminderViewModel : ViewModel() {
             ReminderDatabase.invoke(context).reminderDao().deleteReminder(uuid)
         }
     }
+
+
 
 
 

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.berkedursunoglu.a.model.ReminderModel
+import java.util.ArrayList
 
 @Dao
 interface ReminderDao {
