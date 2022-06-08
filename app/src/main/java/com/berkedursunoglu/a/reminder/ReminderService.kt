@@ -33,9 +33,7 @@ class ReminderService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand: ON")
-
-        if (intent?.getStringExtra("notification") == "alarmclose") {
+        if (intent?.getStringExtra("alarm") == "close") {
             stopSelf()
         } else {
             var desc = intent?.getStringExtra("desc")
@@ -43,7 +41,7 @@ class ReminderService : Service() {
             mp.start()
             notification(this, desc.orEmpty())
         }
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onDestroy() {
@@ -56,19 +54,19 @@ class ReminderService : Service() {
 
     private fun notification(context: Context, desc: String) {
         var intent = Intent(context.applicationContext, ReminderService::class.java).let {
-            it.putExtra("notification", "alarmclose")
-            PendingIntent.getService(context.applicationContext, 1, it, PendingIntent.FLAG_IMMUTABLE)
+            it.putExtra("alarm", "close")
+            PendingIntent.getService(context.applicationContext, 1, it, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
             var builder = NotificationCompat.Builder(context, "reminderChannel")
-                .setSmallIcon(R.drawable.reminder)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Hatırlatıcı")
                 .setContentText(desc)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setOnlyAlertOnce(true)
-                .addAction(R.drawable.reminder, "Tamam", intent)
+                .addAction(R.drawable.logo, "Tamam", intent)
                 .build()
             var managerCompat = NotificationManagerCompat.from(context)
             managerCompat.notify(1, builder)

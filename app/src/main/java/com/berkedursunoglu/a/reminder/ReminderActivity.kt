@@ -154,9 +154,9 @@ class ReminderActivity : AppCompatActivity() {
         if(desc == ""){
             desc = "Hatırlatma"
         }
-        val intent = Intent(this.applicationContext,ReminderService::class.java).let {
+        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
             it.putExtra("desc",desc)
-            PendingIntent.getService(this.applicationContext,requestCode,it,PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
         val timeMillis = cal.timeInMillis

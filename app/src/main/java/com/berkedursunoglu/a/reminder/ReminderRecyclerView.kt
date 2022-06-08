@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ReminderRecyclerView(var arrayListReminder:ArrayList<ReminderModel>):RecyclerView.Adapter<RecyclerViewReminderViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,6 +35,7 @@ class ReminderRecyclerView(var arrayListReminder:ArrayList<ReminderModel>):Recyc
         holder.itemTime.text = arrayListReminder[position].clockReminder
         holder.itemView.setOnClickListener {
             var requestCode = arrayListReminder[position].requestCode
+            Log.e("TAG", "onBindViewHolder: $requestCode", )
             var position = position
             alertDiaglog(holder.itemView.context,requestCode,position)
         }
@@ -50,10 +52,10 @@ class ReminderRecyclerView(var arrayListReminder:ArrayList<ReminderModel>):Recyc
         alert.setPositiveButton("Evet"){ diaglog,which ->
 
             var alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val intent = Intent(context.applicationContext,ReminderService::class.java).let {
-                PendingIntent.getService(context.applicationContext,requestCode,it,PendingIntent.FLAG_IMMUTABLE)
-            }
-            alarmManager.cancel(intent)
+            val intent = Intent(context.applicationContext,AlarmReceiver::class.java)
+            var flag = PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            var pendingIntent = PendingIntent.getBroadcast(context.applicationContext,requestCode,intent, flag)
+            alarmManager.cancel(pendingIntent)
 
             GlobalScope.launch(Dispatchers.IO) {
                 ReminderDatabase.invoke(context).reminderDao().deleteReminder(arrayListReminder[position].requestCode)

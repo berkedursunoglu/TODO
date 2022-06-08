@@ -42,14 +42,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".reminder.ReminderService"
+        <service
+            android:name=".reminder.ReminderService"
             android:enabled="true"
             android:exported="true"
-            android:process=":ServiceProcess">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </service>
+            android:process=":ServiceProcess" />
 
     </application>
 
