@@ -15,9 +15,7 @@ data class ReminderModel(
     @ColumnInfo(name = "clockTimeMillis")
     val clockTimeMillis:Long,
     @ColumnInfo(name = "requestCode")
+    @PrimaryKey
     val requestCode:Int
     ) {
-
-    @PrimaryKey(autoGenerate = true)
-     var uuid = 0
 }

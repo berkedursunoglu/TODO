@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tanım"
-        android:textColor="@color/secondaryTextColor"
+        android:textColor="@color/primaryTextColor"
         android:textSize="20sp">
 </TextView>
 
@@ -18,7 +18,9 @@
         android:id="@+id/reminder_edittext"
         android:layout_width="150dp"
         android:layout_height="48dp"
-        android:layout_marginTop="10dp"></EditText>
+        android:layout_marginTop="10dp"
+        android:hint="Hatırlatma"
+        android:textColor="@color/primaryTextColor"></EditText>
 
     <LinearLayout
         android:layout_marginTop="20dp"
@@ -32,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="Tarih: GG/AA/YYYY"
             android:textSize="15sp"
-            android:textColor="@color/secondaryTextColor"
+            android:textColor="@color/primaryTextColor"
             android:gravity="center"
             android:layout_gravity="center">
         </TextView>
@@ -63,7 +65,7 @@
            android:layout_height="wrap_content"
            android:text="Saat: 12:00"
            android:textSize="15sp"
-           android:textColor="@color/secondaryTextColor">
+           android:textColor="@color/primaryTextColor">
        </TextView>
 
        <ImageButton

@@ -12,8 +12,8 @@ interface ReminderDao {
     @Insert
     suspend fun insertReminder(vararg reminder:ReminderModel)
 
-    @Query("DELETE FROM reminder WHERE uuid = :uuid")
-    suspend fun deleteReminder(uuid: Int)
+    @Query("DELETE FROM reminder WHERE requestCode = :requestCode")
+    suspend fun deleteReminder(requestCode: Int)
 
     @Query("SELECT * FROM reminder")
     suspend fun getAllReminder(): List<ReminderModel>

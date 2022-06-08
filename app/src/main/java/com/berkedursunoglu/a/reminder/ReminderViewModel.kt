@@ -40,9 +40,9 @@ class ReminderViewModel : ViewModel() {
         }
     }
 
-    fun deleteDatabase(context: Context,uuid: Int){
+    fun deleteDatabase(context: Context,requestCode: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            ReminderDatabase.invoke(context).reminderDao().deleteReminder(uuid)
+            ReminderDatabase.invoke(context).reminderDao().deleteReminder(requestCode)
         }
     }
 

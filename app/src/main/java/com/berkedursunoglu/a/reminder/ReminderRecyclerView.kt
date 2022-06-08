@@ -50,17 +50,17 @@ class ReminderRecyclerView(var arrayListReminder:ArrayList<ReminderModel>):Recyc
         alert.setPositiveButton("Evet"){ diaglog,which ->
 
             var alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val intent = Intent(context.applicationContext,AlarmReceiver::class.java).let {
-                val flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-                PendingIntent.getBroadcast(context.applicationContext,requestCode,it,flag)
+            val intent = Intent(context.applicationContext,ReminderService::class.java).let {
+                PendingIntent.getService(context.applicationContext,requestCode,it,PendingIntent.FLAG_IMMUTABLE)
             }
             alarmManager.cancel(intent)
+
             GlobalScope.launch(Dispatchers.IO) {
-                ReminderDatabase.invoke(context).reminderDao().deleteReminder(arrayListReminder[position].uuid)
+                ReminderDatabase.invoke(context).reminderDao().deleteReminder(arrayListReminder[position].requestCode)
+
             }
 
-            notifyItemRemoved(position)
-            arrayListReminder.removeAt(position)
+            notifyDataSetChanged()
 
 
         }

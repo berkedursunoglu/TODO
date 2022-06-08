@@ -23,6 +23,7 @@ import com.berkedursunoglu.a.databinding.ActivityReminderBinding
 import com.berkedursunoglu.a.databinding.ReminderAlertdialogBinding
 import com.berkedursunoglu.a.model.ReminderModel
 import java.text.SimpleDateFormat
+import java.time.chrono.JapaneseEra.values
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -36,13 +37,15 @@ class ReminderActivity : AppCompatActivity() {
     private lateinit var rv: ReminderRecyclerView
     private val cal = Calendar.getInstance()
     private lateinit var alarmManager: AlarmManager
+    private var arraylist = ArrayList<ReminderModel>()
+
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_reminder)
         dataBindingReminder = DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
-        dataBinding.reminderRecyclerview.layoutManager = LinearLayoutManager(this.applicationContext)
+
         viewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
         recyclerView()
         dataBinding.addReminder.setOnClickListener {
@@ -82,14 +85,13 @@ class ReminderActivity : AppCompatActivity() {
     private fun checkTime(setMillis: Long):Boolean {
         val calendar = Calendar.getInstance()
         val currentTime = calendar.timeInMillis
-        val abs = abs(currentTime-setMillis)
-        if (abs < 10000){
-            Toast.makeText(this.applicationContext,"Min. 5 dakika sonrasına hatırlatma kurabilirsiniz.",Toast.LENGTH_SHORT).show()
+        val abs = setMillis-currentTime
+        if (abs < 0){
+            Toast.makeText(this.applicationContext,R.string.timeralert,Toast.LENGTH_SHORT).show()
             return false
         }
         return true
     }
-
 
     private fun datePicker(context: Context) {
         val datePicker = DatePickerDialog.OnDateSetListener { _, i, i2, i3 ->
@@ -103,6 +105,7 @@ class ReminderActivity : AppCompatActivity() {
         var month = cal.get(Calendar.MONTH)
         var day = cal.get(Calendar.DAY_OF_MONTH)
         DatePickerDialog(context,datePicker,year,month,day).show()
+
     }
 
     private fun timerPicker(context: Context) {
@@ -113,6 +116,10 @@ class ReminderActivity : AppCompatActivity() {
             dataBindingReminder.reminderTimetextview.text = "Saat: $format"
         }
         TimePickerDialog(context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        Log.e("TAG", "timerPicker: ayarlanmış ${cal.timeInMillis}")
+        var cal = Calendar.getInstance()
+        Log.e("TAG", "timerPicker: ayarlanmamış ${cal.timeInMillis}")
+
     }
 
     private fun alertDialogsetTime(){
@@ -133,9 +140,8 @@ class ReminderActivity : AppCompatActivity() {
         val int = shared.getInt("int",0)
         var intplus = int+1
         edit.putInt("int",intplus).commit()
-        return intplus
+        return int
     }
-
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun alarmManager(){
@@ -148,32 +154,28 @@ class ReminderActivity : AppCompatActivity() {
         if(desc == ""){
             desc = "Hatırlatma"
         }
-        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
+        val intent = Intent(this.applicationContext,ReminderService::class.java).let {
             it.putExtra("desc",desc)
-            var flag = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
-            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,flag)
+            PendingIntent.getService(this.applicationContext,requestCode,it,PendingIntent.FLAG_IMMUTABLE)
         }
 
         val timeMillis = cal.timeInMillis
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
-
         viewModel.insertDatabase(this.applicationContext,desc,clocktext,datetext,timeMillis,requestCode)
-        recyclerView()
         createNotificationChannel()
+        recyclerView()
     }
 
     private fun recyclerView(){
         viewModel.getAllDatabase(this.applicationContext)
         viewModel.reminderArray.observe(this){
-            rv = ReminderRecyclerView(it)
+            arraylist = it
+            rv = ReminderRecyclerView(arraylist)
+            dataBinding.reminderRecyclerview.layoutManager = LinearLayoutManager(this.applicationContext)
             dataBinding.reminderRecyclerview.adapter = rv
-            rv.notifyDataSetChanged()
         }
     }
-
-
-
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -186,5 +188,9 @@ class ReminderActivity : AppCompatActivity() {
             val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

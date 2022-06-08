@@ -7,6 +7,7 @@
     <string name="hat_rlat">Hatırlat</string>
     <string name="al_veri_listesi">Alışveriş Listesi</string>
     <string name="rn_2_ekmek">Örn. 2 Ekmek</string>
+    <string name="timeralert">Min. 1 dakika sonrasına alarm kurunuz.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

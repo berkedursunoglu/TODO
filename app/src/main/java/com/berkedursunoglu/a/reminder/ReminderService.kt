@@ -57,8 +57,7 @@ class ReminderService : Service() {
     private fun notification(context: Context, desc: String) {
         var intent = Intent(context.applicationContext, ReminderService::class.java).let {
             it.putExtra("notification", "alarmclose")
-            var flag = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-            PendingIntent.getService(context.applicationContext, 1, it, flag)
+            PendingIntent.getService(context.applicationContext, 1, it, PendingIntent.FLAG_IMMUTABLE)
         }
 
             var builder = NotificationCompat.Builder(context, "reminderChannel")

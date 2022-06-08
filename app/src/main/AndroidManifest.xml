@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/reminder"
+        android:icon="@drawable/calendarapplogo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/reminder"
+        android:roundIcon="@drawable/calendarapplogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.A">
         <activity
