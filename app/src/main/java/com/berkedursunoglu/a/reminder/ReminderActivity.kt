@@ -150,6 +150,7 @@ class ReminderActivity : AppCompatActivity() {
         }
         val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
             it.putExtra("desc",desc)
+            it.putExtra("requestcode",requestCode)
             PendingIntent.getBroadcast(this.applicationContext,requestCode,it,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         }
 

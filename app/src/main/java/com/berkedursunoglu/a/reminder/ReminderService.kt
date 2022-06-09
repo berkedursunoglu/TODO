@@ -12,6 +12,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.berkedursunoglu.a.R
+import com.berkedursunoglu.a.services.ReminderDao
+import com.berkedursunoglu.a.services.ReminderDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.net.URI
 
 class ReminderService : Service() {
@@ -34,12 +38,17 @@ class ReminderService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.getStringExtra("alarm") == "close") {
+            val rc = intent.getIntExtra("requestcode",0)
+            GlobalScope.launch {
+                ReminderDatabase.invoke(this@ReminderService).reminderDao().deleteReminder(rc)
+            }
             stopSelf()
         } else {
             var desc = intent?.getStringExtra("desc")
+            var requestcode = intent?.getIntExtra("requestcode",0)
             mp.isLooping = true
             mp.start()
-            notification(this, desc.orEmpty())
+            notification(this, desc.orEmpty(),requestcode)
         }
         return START_STICKY
     }
@@ -52,9 +61,10 @@ class ReminderService : Service() {
     }
 
 
-    private fun notification(context: Context, desc: String) {
+    private fun notification(context: Context, desc: String, requestcode: Int?) {
         var intent = Intent(context.applicationContext, ReminderService::class.java).let {
             it.putExtra("alarm", "close")
+            it.putExtra("requestcode",requestcode)
             PendingIntent.getService(context.applicationContext, 1, it, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         }
 
