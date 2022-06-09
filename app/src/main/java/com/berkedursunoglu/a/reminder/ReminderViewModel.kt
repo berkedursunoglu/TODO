@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class ReminderViewModel : ViewModel() {
 
-    val reminderArray = MutableLiveData<ArrayList<ReminderModel>>()
+    var reminderArray = MutableLiveData<ArrayList<ReminderModel>>()
 
 
     fun insertDatabase(context: Context,desc:String,clock:String,date:String,timeMillis:Long,request:Int){
@@ -33,7 +33,7 @@ class ReminderViewModel : ViewModel() {
 
     fun getAllDatabase(context: Context){
         viewModelScope.launch(Dispatchers.IO) {
-            val arrayList = ReminderDatabase.invoke(context).reminderDao().getAllReminder()
+            var arrayList = ReminderDatabase.invoke(context).reminderDao().getAllReminder()
             withContext(Dispatchers.Main){
                 reminderArray.value = arrayList as ArrayList<ReminderModel>
             }

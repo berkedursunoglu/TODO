@@ -13,7 +13,7 @@
         android:theme="@style/Theme.A">
         <activity
             android:name=".reminder.ReminderActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".notes.NoteActivity"
             android:exported="false" />
