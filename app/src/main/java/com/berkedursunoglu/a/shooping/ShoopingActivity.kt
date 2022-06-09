@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -64,13 +65,21 @@ class ShoopingActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_trash -> {
-                deleteAll()
-                dataFromRoom()
+                var alart = AlertDialog.Builder(this@ShoopingActivity)
+                alart.setTitle("Alışveriş Listesi")
+                alart.setMessage("Tüm liste silinecektir bunu yapmak istiyor musunuz?")
+                alart.setPositiveButton("Evet"){a,b->
+                    deleteAll()
+                    dataFromRoom()
+                }
+                alart.setNegativeButton("Hayır"){a,b->
+
+                }
+                alart.show()
                 true
             }
             else -> return false
         }
-
     }
 
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.berkedursunoglu.a.meeting.MeetingActivity
 import com.berkedursunoglu.a.R
 import com.berkedursunoglu.a.shooping.ShoopingActivity
 import com.berkedursunoglu.a.databinding.ActivityMainBinding
@@ -26,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, ShoopingActivity::class.java))
     }
 
-    fun meetingActivity(){
-        startActivity(Intent(this, MeetingActivity::class.java))
-    }
 
     fun noteActivity(){
         startActivity(Intent(this, NoteActivity::class.java))

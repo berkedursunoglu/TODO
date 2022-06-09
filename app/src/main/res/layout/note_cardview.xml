@@ -2,33 +2,39 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="205dp"
+    android:layout_width="200dp"
     android:layout_height="250dp"
-    app:cardBackgroundColor="@color/primaryLightColor"
+    app:cardBackgroundColor="#00000000"
     android:outlineSpotShadowColor="#00F1F1F1"
     android:outlineAmbientShadowColor="#00F1F1F1">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/notecardview_bg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            tools:layout_editor_absoluteX="3dp"
-            tools:layout_editor_absoluteY="3dp">
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/cardviewnotes" />
 
-            <TextView
-                android:id="@+id/noteTextView"
-                android:layout_width="160dp"
-                android:layout_height="200dp"
-                android:gravity="center"
-                android:text="TextView"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="205dp"
+        android:layout_height="250dp">
+
+        <TextView
+            android:id="@+id/noteTextView"
+            android:layout_width="0dp"
+            android:layout_height="162dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="33dp"
+            android:gravity="center"
+            android:text="sadfasdfakjsdfhaadsfkjasdfasdjfhasdfaksdhjfaasdfhkadfaskjdhfakjsdf"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>
