@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -17,10 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.berkedursunoglu.a.R
 import com.berkedursunoglu.a.databinding.ActivityReminderBinding
 import com.berkedursunoglu.a.databinding.ReminderAlertdialogBinding
-import com.berkedursunoglu.a.model.ReminderModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ReminderActivity : AppCompatActivity() {
@@ -33,13 +34,14 @@ class ReminderActivity : AppCompatActivity() {
     private lateinit var alarmManager: AlarmManager
 
 
-
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_reminder)
-        dataBindingReminder = DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
-        dataBinding.reminderRecyclerview.layoutManager = LinearLayoutManager(this.applicationContext)
+        dataBindingReminder =
+            DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
+        dataBinding.reminderRecyclerview.layoutManager =
+            LinearLayoutManager(this.applicationContext)
         viewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
         recyclerView()
         dataBinding.addReminder.setOnClickListener {
@@ -49,16 +51,18 @@ class ReminderActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun alertDialog() {
-        dataBindingReminder = DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
+        dataBindingReminder =
+            DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
         alertDialogsetTime()
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setView(dataBindingReminder.root)
         alertDialog.setTitle("Hatırlatma")
         alertDialog.setMessage("Gerekli bilgileri doldurunuz")
         alertDialog.setPositiveButton("Tamam") { _, _ ->
-            if (checkTime(cal.timeInMillis)){
+            if (checkTime(cal.timeInMillis)) {
                 alarmManager()
-                Toast.makeText(this.applicationContext,"Hatırlatma Kuruldu",Toast.LENGTH_LONG).show()
+                Toast.makeText(this.applicationContext, "Hatırlatma Kuruldu", Toast.LENGTH_LONG)
+                    .show()
             }
         }
         alertDialog.setNegativeButton("İptal") { _, _ ->
@@ -75,12 +79,12 @@ class ReminderActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private fun checkTime(setMillis: Long):Boolean {
+    private fun checkTime(setMillis: Long): Boolean {
         val calendar = Calendar.getInstance()
         val currentTime = calendar.timeInMillis
-        val abs = setMillis-currentTime
-        if (abs < 0){
-            Toast.makeText(this.applicationContext,R.string.timeralert,Toast.LENGTH_SHORT).show()
+        val abs = setMillis - currentTime
+        if (abs < 0) {
+            Toast.makeText(this.applicationContext, R.string.timeralert, Toast.LENGTH_SHORT).show()
             return false
         }
         return true
@@ -89,16 +93,16 @@ class ReminderActivity : AppCompatActivity() {
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun datePicker(context: Context) {
         val datePicker = DatePickerDialog.OnDateSetListener { _, i, i2, i3 ->
-            cal.set(Calendar.YEAR,i)
-            cal.set(Calendar.MONTH,i2)
-            cal.set(Calendar.DAY_OF_MONTH,i3)
+            cal.set(Calendar.YEAR, i)
+            cal.set(Calendar.MONTH, i2)
+            cal.set(Calendar.DAY_OF_MONTH, i3)
             val format = SimpleDateFormat("dd/MM/yyyy").format(cal.time)
             dataBindingReminder.reminderDatetextview.text = "Tarih: $format"
         }
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(context,datePicker,year,month,day).show()
+        DatePickerDialog(context, datePicker, year, month, day).show()
 
     }
 
@@ -110,11 +114,17 @@ class ReminderActivity : AppCompatActivity() {
             val format = SimpleDateFormat("HH:mm").format(cal.time)
             dataBindingReminder.reminderTimetextview.text = "Saat: $format"
         }
-        TimePickerDialog(context, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        TimePickerDialog(
+            context,
+            timeSetListener,
+            cal.get(Calendar.HOUR_OF_DAY),
+            cal.get(Calendar.MINUTE),
+            true
+        ).show()
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    private fun alertDialogsetTime(){
+    private fun alertDialogsetTime() {
         cal.get(Calendar.YEAR)
         cal.get(Calendar.MONTH)
         cal.get(Calendar.DAY_OF_MONTH)
@@ -126,47 +136,63 @@ class ReminderActivity : AppCompatActivity() {
         dataBindingReminder.reminderTimetextview.text = "Saat: $formatClock"
     }
 
-    private fun sharedInteger():Int{
+    private fun sharedInteger(): Int {
         val shared = this.getSharedPreferences("uuidInt", MODE_PRIVATE)
         val edit = shared.edit()
-        val int = shared.getInt("int",0)
-        val intplus = int+1
-        edit.putInt("int",intplus).apply()
+        val int = shared.getInt("int", 0)
+        val intplus = int + 1
+        edit.putInt("int", intplus).apply()
         return int
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun alarmManager(){
+    private fun alarmManager() {
         alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             alarmManager.canScheduleExactAlarms()
         }
         val requestCode = sharedInteger()
         val datetext = dataBindingReminder.reminderDatetextview.text.toString()
         val clocktext = dataBindingReminder.reminderTimetextview.text.toString()
         var desc = dataBindingReminder.reminderEdittext.text.toString()
-        if(desc == ""){
+        if (desc == "") {
             desc = "Hatırlatma"
         }
-        val intent = Intent(this.applicationContext,AlarmReceiver::class.java).let {
-            it.putExtra("desc",desc)
-            it.putExtra("requestcode",requestCode)
-            PendingIntent.getBroadcast(this.applicationContext,requestCode,it,PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+        val intent = Intent(this.applicationContext, AlarmReceiver::class.java).let {
+            it.putExtra("desc", desc)
+            it.putExtra("requestcode", requestCode)
+            PendingIntent.getBroadcast(
+                this.applicationContext,
+                requestCode,
+                it,
+                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
         }
 
         val timeMillis = cal.timeInMillis
 
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeMillis,intent)
-        viewModel.insertDatabase(this.applicationContext,desc,clocktext,datetext,timeMillis,requestCode)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeMillis, intent)
+        viewModel.insertDatabase(
+            this.applicationContext,
+            desc,
+            clocktext,
+            datetext,
+            timeMillis,
+            requestCode
+        )
         createNotificationChannel()
         recyclerView()
     }
 
-    private fun recyclerView(){
-        viewModel.getAllDatabase(this.applicationContext)
-        viewModel.reminderArray.observe(this){
-            rv = ReminderRecyclerView(it)
-            dataBinding.reminderRecyclerview.adapter = rv
+    private fun recyclerView() {
+        GlobalScope.launch(Dispatchers.IO) {
+            viewModel.getAllDatabase(this@ReminderActivity)
+            withContext(Dispatchers.Main) {
+                viewModel.reminderArray.observe(this@ReminderActivity) {
+                    rv = ReminderRecyclerView(it)
+                    dataBinding.reminderRecyclerview.adapter = rv
+                }
+            }
         }
     }
 
@@ -179,7 +205,8 @@ class ReminderActivity : AppCompatActivity() {
             val channel = NotificationChannel("reminderChannel", name, importance).apply {
                 description = descriptionText
             }
-            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
