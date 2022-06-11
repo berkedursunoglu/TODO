@@ -1,84 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
-    android:layout_width="200dp"
-    android:layout_height="300dp"
-    android:orientation="vertical"
-    android:gravity="center">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tanım"
-        android:textColor="@color/secondaryTextColor"
-        android:textSize="20sp">
-</TextView>
 
-    <EditText
-        android:id="@+id/reminder_edittext"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:hint="Hatırlatma"
-        android:textColor="@color/secondaryTextColor"></EditText>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="200dp"
+        android:layout_height="320dp"
+        android:background="@color/primaryColor"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/reminder_timetextview"
+        app:layout_constraintStart_toEndOf="@+id/reminder_timetextview">
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Hatırlatma"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.124"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Gerekli alanları doldurunuz."
+            android:textColor="@color/primaryTextColor"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Tanım"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <EditText
+            android:id="@+id/reminder_edittext"
+            android:layout_width="162dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/primaryTextColor"
+            android:ems="10"
+            android:hint="Örn. toplantı"
+            android:inputType="textPersonName"
+            android:textColor="@color/primaryTextColor"
+            android:textColorHint="#72FFFFFF"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/reminder_datetextview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tarih: GG/AA/YYYY"
-            android:textSize="15sp"
-            android:textColor="@color/secondaryTextColor"
-            android:gravity="center"
-            android:layout_gravity="center">
-        </TextView>
+            android:layout_marginTop="28dp"
+            android:text="Tarih: 24/04/2023"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="@+id/reminder_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_edittext" />
+
+        <ImageButton
+            android:id="@+id/clock_button"
+            android:layout_width="30dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="60dp"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintEnd_toEndOf="@+id/reminder_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_edittext"
+            app:srcCompat="@drawable/clock" />
+
+        <TextView
+            android:id="@+id/reminder_timetextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Saat: 20:19"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="@+id/reminder_datetextview"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_datetextview" />
 
         <ImageButton
             android:id="@+id/calender_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="#00000000"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/calenderbutton"
-            tools:ignore="TouchTargetSizeCheck">
+            android:layout_width="30dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/al_veri_listesi"
+            app:layout_constraintEnd_toEndOf="@+id/reminder_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_edittext"
+            app:srcCompat="@drawable/calendar" />
 
-        </ImageButton>
-    </LinearLayout>
+        <Button
+            android:id="@+id/alarmbutton"
+            android:layout_width="78dp"
+            android:layout_height="31dp"
 
-   <LinearLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:gravity="center">
+            android:layout_marginTop="124dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Onayla"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="10dp"
+            app:iconTint="#00FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reminder_edittext"
+            app:layout_constraintVertical_bias="0.157" />
 
-       <TextView
-           android:id="@+id/reminder_timetextview"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="Saat: 12:00"
-           android:textSize="15sp"
-           android:textColor="@color/secondaryTextColor">
-       </TextView>
-
-       <ImageButton
-           android:id="@+id/clock_button"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="5dp"
-           android:backgroundTint="#00000000"
-           android:contentDescription="@string/app_name"
-           android:src="@drawable/clock"
-           tools:ignore="TouchTargetSizeCheck"></ImageButton>
-   </LinearLayout>
-
-
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

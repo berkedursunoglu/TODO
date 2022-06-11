@@ -3,6 +3,7 @@ package com.berkedursunoglu.a.reminder
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +33,8 @@ class ReminderActivity : AppCompatActivity() {
     private lateinit var rv: ReminderRecyclerView
     private val cal = Calendar.getInstance()
     private lateinit var alarmManager: AlarmManager
+    private lateinit var alertDialog:AlertDialog.Builder
+    private lateinit var dissmisAlert:AlertDialog
 
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -54,20 +57,10 @@ class ReminderActivity : AppCompatActivity() {
         dataBindingReminder =
             DataBindingUtil.inflate(this.layoutInflater, R.layout.reminder_alertdialog, null, false)
         alertDialogsetTime()
-        val alertDialog = AlertDialog.Builder(this)
+        alertDialog = AlertDialog.Builder(this)
         alertDialog.setView(dataBindingReminder.root)
-        alertDialog.setTitle("Hatırlatma")
-        alertDialog.setMessage("Gerekli bilgileri doldurunuz")
-        alertDialog.setPositiveButton("Tamam") { _, _ ->
-            if (checkTime(cal.timeInMillis)) {
-                alarmManager()
-                Toast.makeText(this.applicationContext, "Hatırlatma Kuruldu", Toast.LENGTH_LONG)
-                    .show()
-            }
-        }
-        alertDialog.setNegativeButton("İptal") { _, _ ->
-        }
-
+        dissmisAlert = alertDialog.create()
+        dissmisAlert.show()
         dataBindingReminder.calenderButton.setOnClickListener {
             datePicker(it.context)
         }
@@ -76,7 +69,15 @@ class ReminderActivity : AppCompatActivity() {
             timerPicker(it.context)
         }
 
-        alertDialog.show()
+        dataBindingReminder.alarmbutton.setOnClickListener {
+            if (checkTime(cal.timeInMillis)) {
+                alarmManager()
+                Toast.makeText(this.applicationContext, "Hatırlatma Kuruldu", Toast.LENGTH_LONG)
+                    .show()
+                dissmisAlert.dismiss()
+            }
+        }
+
     }
 
     private fun checkTime(setMillis: Long): Boolean {
