@@ -12,6 +12,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/noteToolbar"
+        app:navigationIcon="@drawable/calendarlogotoolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"

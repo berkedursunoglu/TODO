@@ -5,12 +5,17 @@ import android.app.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
+import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.allViews
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +40,7 @@ class ReminderActivity : AppCompatActivity() {
     private lateinit var alarmManager: AlarmManager
     private lateinit var alertDialog:AlertDialog.Builder
     private lateinit var dissmisAlert:AlertDialog
+    private lateinit var guideShared:SharedPreferences
 
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -46,6 +52,10 @@ class ReminderActivity : AppCompatActivity() {
         dataBinding.reminderRecyclerview.layoutManager =
             LinearLayoutManager(this.applicationContext)
         viewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
+        guideShared = this.getSharedPreferences("guideShared", MODE_PRIVATE)
+        if (guideShared.getInt("guide",0) == 1){
+            dataBinding.guideimage.visibility = View.GONE
+        }
         recyclerView()
         dataBinding.addReminder.setOnClickListener {
             alertDialog()
@@ -126,6 +136,7 @@ class ReminderActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun alertDialogsetTime() {
+        val cal = Calendar.getInstance()
         cal.get(Calendar.YEAR)
         cal.get(Calendar.MONTH)
         cal.get(Calendar.DAY_OF_MONTH)
@@ -181,6 +192,7 @@ class ReminderActivity : AppCompatActivity() {
             timeMillis,
             requestCode
         )
+        guideShared()
         createNotificationChannel()
         recyclerView()
     }
@@ -214,5 +226,11 @@ class ReminderActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private fun guideShared(){
+        guideShared = this.getSharedPreferences("guideShared", MODE_PRIVATE)
+        val guidEdit = guideShared.edit()
+        guidEdit.putInt("guide",1).apply()
     }
 }

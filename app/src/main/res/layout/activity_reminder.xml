@@ -12,6 +12,7 @@
         android:id="@+id/reminder_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/calendarlogotoolbar"
         android:background="@color/primaryColor"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -27,8 +28,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reminder_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/reminder_toolbar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_reminder"
@@ -43,5 +46,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/plus"
         tools:ignore="ImageContrastCheck" />
+
+    <ImageView
+        android:id="@+id/guideimage"
+        android:layout_width="237dp"
+        android:layout_height="284dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_reminder"
+        app:layout_constraintEnd_toStartOf="@+id/add_reminder"
+        app:srcCompat="@drawable/guideimage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,6 +11,7 @@
     <androidx.appcompat.widget.Toolbar
         app:title="Alışveriş Listesi"
         app:titleTextColor="@color/primaryTextColor"
+        app:navigationIcon="@drawable/calendarlogotoolbar"
         android:id="@+id/shop_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

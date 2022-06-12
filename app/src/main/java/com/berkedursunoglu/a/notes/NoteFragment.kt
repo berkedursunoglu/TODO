@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.berkedursunoglu.a.R
 import com.berkedursunoglu.a.databinding.FragmentNoteBinding
+import com.berkedursunoglu.a.model.NoteModel
 
 
 class NoteFragment : Fragment() {
@@ -48,7 +49,7 @@ class NoteFragment : Fragment() {
     private fun getData() {
         viewModel.getDataFromRoom(dataBinding.root.context)
         viewModel.arrayListNote.observe(viewLifecycleOwner) {
-            var rv = NoteRecyclerView(it)
+            var rv = NoteRecyclerView(it as ArrayList<NoteModel>)
             dataBinding.noteRecyclerView.adapter = rv
         }
     }

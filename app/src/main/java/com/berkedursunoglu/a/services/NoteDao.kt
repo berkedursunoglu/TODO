@@ -1,6 +1,7 @@
 package com.berkedursunoglu.a.services
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.berkedursunoglu.a.model.NoteModel
@@ -21,6 +22,9 @@ interface NoteDao {
 
     @Query("UPDATE note SET noteItem = :string WHERE uuid = :uuid")
     suspend fun editNote(uuid:Int,string:String)
+
+    @Query("DELETE FROM note WHERE uuid = :uuid")
+    suspend fun deleteNoteitem(uuid: Int)
 
 
 }

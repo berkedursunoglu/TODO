@@ -20,8 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.log
 
-class ReminderRecyclerView(var arrayListReminder: ArrayList<ReminderModel>) :
-    RecyclerView.Adapter<RecyclerViewReminderViewHolder>() {
+class ReminderRecyclerView(var arrayListReminder: ArrayList<ReminderModel>) : RecyclerView.Adapter<RecyclerViewReminderViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

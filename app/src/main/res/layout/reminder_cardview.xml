@@ -56,13 +56,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="47dp"
-            android:layout_height="65dp"
+            android:layout_width="45dp"
+            android:layout_height="47dp"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/reminder_decs_textview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8"
+            app:layout_constraintVertical_bias="0.562"
             app:srcCompat="@drawable/calendarlogo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
