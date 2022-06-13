@@ -7,7 +7,7 @@
     <data>
         <variable
             name="mainActivity"
-            type="com.berkedursunoglu.unutmadan.main.MainActivity" />
+            type="com.berkedursunoglu.a.main.MainActivity" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

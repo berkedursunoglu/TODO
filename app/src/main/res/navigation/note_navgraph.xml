@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/noteFragment"
-        android:name="com.berkedursunoglu.unutmadan.notes.NoteFragment"
+        android:name="com.berkedursunoglu.a.notes.NoteFragment"
         android:label="NoteFragment" >
         <action
             android:id="@+id/noteFragtoEditFrag"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/editFragment"
-        android:name="com.berkedursunoglu.unutmadan.notes.EditFragment"
+        android:name="com.berkedursunoglu.a.notes.EditFragment"
         android:label="EditFragment" >
         <action
             android:id="@+id/editFragtoNoteFrag"

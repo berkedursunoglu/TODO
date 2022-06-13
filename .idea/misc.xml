@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/drawable/ic_launcher_background.xml" value="0.269" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/drawable/notecardview_bg.xml" value="0.317" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/drawable/plus.xml" value="0.3485" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/drawable/shooping_add_bg.xml" value="0.301" />
@@ -13,12 +14,11 @@
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/activity_note.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/activity_reminder.xml" value="0.33" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/activity_shooping.xml" value="0.3748271092669433" />
-        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/activity_welcome.xml" value="0.346875" />
+        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/activity_welcome.xml" value="0.2" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/alertstyle.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/fragment_edit.xml" value="0.25" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/fragment_note.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/fragment_welcome_first.xml" value="0.33" />
-        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/fragment_welcome_second.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/fragment_welcome_thirt.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/note_cardview.xml" value="0.5" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/reminder_alertdialog.xml" value="0.25" />
@@ -26,6 +26,8 @@
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/layout/shooping_cardview.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/menu/note_menu.xml" value="0.346875" />
         <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/menu/shooping_menu.xml" value="0.33" />
+        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1495" />
+        <entry key="..\:/Users/kofun/AndroidStudioProjects/A/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1675" />
       </map>
     </option>
   </component>
