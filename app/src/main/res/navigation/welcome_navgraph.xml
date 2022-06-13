@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFirst"
-        android:name="com.berkedursunoglu.a.guideactivitys.WelcomeFirst"
+        android:name="com.berkedursunoglu.unutmadan.guideactivitys.WelcomeFirst"
         android:label="fragment_welcome_first"
         tools:layout="@layout/fragment_welcome_first" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomeSecond2"
-        android:name="com.berkedursunoglu.a.guideactivitys.WelcomeSecond"
+        android:name="com.berkedursunoglu.unutmadan.guideactivitys.WelcomeSecond"
         android:label="fragment_welcome_second"
         tools:layout="@layout/fragment_welcome_second" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/welcomeThirt"
-        android:name="com.berkedursunoglu.a.guideactivitys.WelcomeThirt"
+        android:name="com.berkedursunoglu.unutmadan.guideactivitys.WelcomeThirt"
         android:label="fragment_welcome_thirt"
         tools:layout="@layout/fragment_welcome_thirt" />
 </navigation>
