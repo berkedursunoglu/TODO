@@ -54,7 +54,7 @@ class ReminderActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[ReminderViewModel::class.java]
         guideShared = this.getSharedPreferences("guideShared", MODE_PRIVATE)
         if (guideShared.getInt("guide",0) == 1){
-            dataBinding.guideimage.visibility = View.GONE
+            dataBinding.guideimage.visibility = View.INVISIBLE
         }
         recyclerView()
         dataBinding.addReminder.setOnClickListener {

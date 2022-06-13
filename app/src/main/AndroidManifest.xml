@@ -12,13 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.A">
         <activity
+            android:name=".guideactivitys.WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".reminder.ReminderActivity"
             android:exported="false" />
         <activity
             android:name=".notes.NoteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".meeting.MeetingActivity"
             android:exported="false" />
         <activity
             android:name=".shooping.ShoopingActivity"
@@ -26,11 +33,7 @@
         <activity
             android:name=".main.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <receiver
@@ -41,13 +44,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <service
             android:name=".reminder.ReminderService"
             android:enabled="true"
             android:exported="true"
             android:process=":ServiceProcess" />
-
     </application>
 
 </manifest>

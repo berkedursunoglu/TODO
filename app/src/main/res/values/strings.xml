@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">A</string>
+    <string name="app_name">Unutmadan</string>
     <string name="toplant">Toplantı</string>
     <string name="not">Not</string>
     <string name="hat_rlat_c">Hatırlatıcı</string>
     <string name="takvim">Takvim</string>
-    <string name="hat_rlat">Hatırlat</string>
+    <string name="hat_rlat">Hatırlatıcı</string>
     <string name="al_veri_listesi">Alışveriş Listesi</string>
     <string name="rn_2_ekmek">Örn. 2 Ekmek</string>
     <string name="timeralert">Min. 1 dakika sonrasına alarm kurunuz.</string>
