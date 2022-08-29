@@ -3,8 +3,6 @@
 It is an application where you can make a shopping list, keep notes, and not miss your events with reminders. Simple plain and useful.
 
 
-https://github.com/berkedursunoglu/TODO/blob/master/todo/ss1.png
-
 ![image](https://github.com/berkedursunoglu/TODO/blob/master/todo/ss1.png?raw=true)
 ![image](https://github.com/berkedursunoglu/TODO/blob/master/todo/ss2.png?raw=true)
 ![image](https://github.com/berkedursunoglu/TODO/blob/master/todo/ss3.png?raw=true)
